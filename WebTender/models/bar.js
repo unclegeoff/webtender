@@ -6,16 +6,21 @@ var Bar = new mongoose.Schema({
     name_city_st: String,
     display_name: String,
     address: String,
-
-    deals: [{Object: Deal}]
+    capacity: Number
 });
 
-Bar.virtual(' ', function(){
+Bar.virtual('', function(){
 
 });
 
-Bar.virtual('patrons', function(){
-
+Bar.virtual('current_patrons', function(){
+    User.find({current_bar: Bar.name_city_st}, function(err, results){
+        if(err || !results || !results.length){
+            return null;
+        } else {
+            return results.length;
+        }
+    });
 });
 
 module.exports = mongoose.model('Bar', Bar);
